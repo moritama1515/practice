@@ -16,12 +16,24 @@ struct train{
   int fare;
 }trains[MAXCONN];
 
+int city_id(char *name);
+void parse_connection(char *baf);
+int diff_time(int start_time,int end_time);
+
+
 int main()
 {
   int count;
   char buf[64];
+  char max_fbuf[64];
+  char max_lbuf[64];
+  int max_fare;
+  int max_time;
 
   while(1){
+    max_fare = 0;
+    max_time = 0;
+    
     /*データセットの先頭（データ数）を読む*/
     if(fgets(buf,sizeof(buf),stdin) == NULL){
       break;
@@ -39,9 +51,22 @@ int main()
       if(fgets(buf,sizeof(buf),stdin) == NULL){
         break;
       }
-      printf("%s",buf);
-    }
 
+ //     printf("%s",buf);
+      parse_connection(buf);
+      if(max_fare < trains[0].fare){
+        max_fare = trains[0].fare;
+        strcpy(max_fbuf,buf);
+      } 
+      if(max_time < diff_time(trains[0].dpt,trains[0].arv)){
+        max_time = diff_time(trains[0].dpt,trains[0].arv);
+        strcpy(max_lbuf,buf);
+      }
+ 
+    }
+  
+    printf("%s",max_fbuf);
+    printf("%s",max_lbuf);
   }
 }
 
@@ -74,6 +99,7 @@ void parse_connection(char *buf)
   trains[nconn].arv = arv[0]*60+arv[1];
   trains[nconn].fare = fare;
 }
+
 
 int diff_time(int start_time,int end_time){
   int ans;

@@ -24,16 +24,29 @@ int diff_time(int start_time,int end_time);
 int main()
 {
   int count;
+  int i = 0;
+  int j = 0;
   char buf[64];
   char max_fbuf[64];
   char max_lbuf[64];
-  int max_fare;
-  int max_time;
+  char search_from_name[64];
+  char search_to_name[64];
+  char search_train[64][MAXCONN];
+  int max_fare,max_time;
+  int from_num = -1;
+  int to_num = -1;
+      
+  strcpy(search_from_name, "Hakodate");
+  strcpy(search_to_name,"Morioka");
+  from_num = city_id(search_from_name);
+  to_num = city_id(search_to_name);       
 
   while(1){
     max_fare = 0;
     max_time = 0;
-    
+    i = 0;
+
+
     /*データセットの先頭（データ数）を読む*/
     if(fgets(buf,sizeof(buf),stdin) == NULL){
       break;
@@ -62,11 +75,21 @@ int main()
         max_time = diff_time(trains[0].dpt,trains[0].arv);
         strcpy(max_lbuf,buf);
       }
- 
+      if(trains[0].from == from_num){
+        if(trains[0].to == to_num){
+          strcpy(&(search_train[i][0]),buf);
+          i++;
+        }
+      }
     }
-  
+    /*最も金額が高い列車*/
     printf("%s",max_fbuf);
+    /*最も時間がかかる列車*/
     printf("%s",max_lbuf);
+    /*検索結果*/
+    for(j = 0;j <= i;j++){
+      printf("%s",&search_train[j][0]);
+    }
   }
 }
 

@@ -27,7 +27,7 @@ int main()
       break;
     }
 
-    sscanf(buf,"%d",&count);
+    sscanf(buf,"%d",&count);//データセット中のデータ数
     printf("%d\n",count);
     
     if(count == 0){ /*データ全体の終了の判定*/
@@ -35,11 +35,13 @@ int main()
     }
 
     /*データセット（列車データ）を読み込む*/
-    while(count-->0){
+    while(count-- > 0){
       if(fgets(buf,sizeof(buf),stdin) == NULL){
         break;
       }
+      printf("%s",buf);
     }
+
   }
 }
 

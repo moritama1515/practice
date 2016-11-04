@@ -36,26 +36,11 @@ int main()
 
     /*データセット（列車データ）を読み込む*/
     while(count-->0){
-      if(fgets(buf,sizeof(buf),stdin)==NULL){
+      if(fgets(buf,sizeof(buf),stdin) == NULL){
         break;
       }
     }
   }
-}
-
-parse_connection(char *buf)
-{
-  char from[18],to[18];
-  int dpt[2],arv[2],fare;
-
-  sscanf(buf,"%s %d:%d %s %d:%d %d",
-      from,&(dpt[0]),&(dpt[1]),to,&(arv[0]),&(arv[1]),&fare);
-
-  trains[nconn].from = city_id(from);
-  trains[nconn].to = city_id(to);
-  trains[nconn].dpt = dpt[0]*60+dpt[1];
-  trains[nconn].arv = arv[0]*60+arv[1];
-  trains[nconn].fare = fare;
 }
 
 int city_id(char *name)
@@ -70,6 +55,22 @@ int city_id(char *name)
 
   strcpy(&(city_name[ncity][0]),name);
   return ncity++;
+}
+
+
+void parse_connection(char *buf)
+{
+  char from[18],to[18];
+  int dpt[2],arv[2],fare;
+
+  sscanf(buf,"%s %d:%d %s %d:%d %d",
+      from,&(dpt[0]),&(dpt[1]),to,&(arv[0]),&(arv[1]),&fare);
+
+  trains[nconn].from = city_id(from);
+  trains[nconn].to = city_id(to);
+  trains[nconn].dpt = dpt[0]*60+dpt[1];
+  trains[nconn].arv = arv[0]*60+arv[1];
+  trains[nconn].fare = fare;
 }
 
 int diff_time(int start_time,int end_time){
